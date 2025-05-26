@@ -81,7 +81,7 @@ export default function StepTwo({
                 <Box
                   sx={{
                     display: 'flex',
-                    justifyContent: 'space-between',
+                    justifyContent: 'space-evenly',
                     alignItems: 'center',
                   }}
                 >
@@ -104,7 +104,7 @@ export default function StepTwo({
                         onClick={(e) => e.stopPropagation()}
                       />
                     }
-                    label=""
+                    label="Lu"
                   />
                 </Box>
               </Box>

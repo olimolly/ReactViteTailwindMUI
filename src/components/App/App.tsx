@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '../../assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 import { Container, Typography, Button, Box, Stack } from '@mui/material'
-import { useColorMode } from './ThemeContext'
-import SurveyStepper from './components/SurveyStepper/SurveyStepper'
+import { useColorMode } from '../../ThemeContext'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,8 +12,6 @@ function App() {
 
   return (
     <>
-      <SurveyStepper />
-
       <Container maxWidth="sm" sx={{ mt: 4, textAlign: 'center' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, mb: 2 }}>
           <a href="https://vite.dev" target="_blank" rel="noreferrer">
@@ -47,9 +44,7 @@ function App() {
           Click on the Vite and React logos to learn more
         </Typography>
       </Container>
-      
     </>
-
   )
 }
 
