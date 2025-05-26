@@ -63,7 +63,7 @@ export default function StepTwo({
               <Box
                 sx={{
                   m: 2,
-                  p: 2,
+                  p: 1,
                   borderRadius: 2,
                   border: '1px solid',
                   borderColor: 'divider',
