@@ -1,20 +1,23 @@
-import { Box, Button, LinearProgress, Typography } from '@mui/material';
-import { profiles, calculatePerSliderMatch, getBestMatchingProfile } from '../../data/profiles';
-import { preferences } from '../../data/preferences';
+import { Box, Button, Typography } from '@mui/material';
+import { profiles, calculatePerSliderMatch } from '../../data/profiles';
 import CircleProgressWithLabel from '../CircleProgress/CircleProgressWithLabel';
+import { preferences } from '../../data/preferences';
 
 interface StepThreeProps {
     sliders: number[];
+    defaultProfileIndex: number;
     onBack: () => void;
     onNext: () => void;
 }
 
-
-
-export default function StepThree({ sliders, onBack, onNext }: StepThreeProps) {
-    const matchPerSlider = calculatePerSliderMatch(sliders, profiles[0].values);
-
-    const { bestProfile, matchPercentages } = getBestMatchingProfile(sliders, profiles);
+export default function StepThree({
+    sliders,
+    defaultProfileIndex,
+    onBack,
+    onNext,
+}: StepThreeProps) {
+    const defaultProfile = profiles[defaultProfileIndex];
+    const matchPerSlider = calculatePerSliderMatch(sliders, defaultProfile.values);
 
     return (
         <Box
@@ -29,29 +32,20 @@ export default function StepThree({ sliders, onBack, onNext }: StepThreeProps) {
                 gap: 4,
             }}
         >
-
             <Box>
                 <Typography variant="h5" gutterBottom>
-                    Your Results
+                    Compatibility with <strong>{defaultProfile.name}</strong>
                 </Typography>
-
-                {/* {preferences.map((label, index) => (
-                    <Box key={label} sx={{ mb: 3 }}>
-                        <Typography>{label}</Typography>
-                        <LinearProgress variant="determinate" value={matchPerSlider[index]} />
-                        <Typography variant="caption">Match: {matchPerSlider[index]}%</Typography>
-                    </Box>
-                ))} */}
 
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)' },
+                        gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' },
                         gap: 3,
                         mt: 2,
                     }}
                 >
-                    {preferences.map((label, index) => (
+                    {preferences.map((label: string, index: number) => (
                         <CircleProgressWithLabel
                             key={label}
                             label={label}
@@ -60,18 +54,9 @@ export default function StepThree({ sliders, onBack, onNext }: StepThreeProps) {
                     ))}
                 </Box>
 
-
-                <Typography variant="h6" sx={{ mt: 4 }}>
-                    🏆 Best Match: <strong>{bestProfile.name}</strong> ({matchPercentages[profiles.indexOf(bestProfile)]}%)
+                <Typography variant="body2" sx={{ mt: 4 }}>
+                    Looking for more options? We'll show how you match with other profiles next.
                 </Typography>
-
-                <Box sx={{ mt: 2 }}>
-                    {profiles.map((profile, i) => (
-                        <Typography key={profile.name}>
-                            {profile.name}: {matchPercentages[i]}%
-                        </Typography>
-                    ))}
-                </Box>
             </Box>
 
             <Box
@@ -82,10 +67,10 @@ export default function StepThree({ sliders, onBack, onNext }: StepThreeProps) {
                     gap: 2,
                 }}
             >
-                <Button variant="outlined" fullWidth={true} onClick={onBack}>
+                <Button variant="outlined" fullWidth onClick={onBack}>
                     Back
                 </Button>
-                <Button variant="contained" fullWidth={true} onClick={onNext}>
+                <Button variant="contained" fullWidth onClick={onNext}>
                     Continue
                 </Button>
             </Box>

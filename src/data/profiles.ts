@@ -20,25 +20,13 @@ export const profiles: Profile[] = [
 
 
 
-export function calculateMatch(userValues: number[], preset: number[]): number {
-    const total = userValues.length;
-    let matchSum = 0;
-
-    for (let i = 0; i < total; i++) {
-        const diff = Math.abs(userValues[i] - preset[i]);
-        const match = 1 - diff / 10; // normalisé entre 0 et 1
-        matchSum += match;
-    }
-
-    return Math.round((matchSum / total) * 100); // renvoie un %
-}
-
 export function calculatePerSliderMatch(userValues: number[], preset: number[]): number[] {
     return userValues.map((value, index) => {
         const diff = Math.abs(value - preset[index]);
         return Math.round((1 - diff / 10) * 100);
     });
 }
+
 
 export function calculateOverallMatch(userValues: number[], preset: number[]): number {
     const total = userValues.length;
@@ -48,16 +36,44 @@ export function calculateOverallMatch(userValues: number[], preset: number[]): n
     return Math.round((matchSum / total) * 100);
 }
 
-export function getBestMatchingProfile(userValues: number[], profiles: Profile[]): {
+export function getBestMatchingProfile(
+    userValues: number[],
+    profiles: Profile[]
+): {
     bestProfile: Profile;
+    bestIndex: number;
     matchPercentages: number[];
 } {
+    if (profiles.length === 0) {
+        throw new Error('No profiles provided');
+    }
+
     const matchPercentages = profiles.map(profile =>
         calculateOverallMatch(userValues, profile.values)
     );
+
     const bestIndex = matchPercentages.indexOf(Math.max(...matchPercentages));
+
+    if (bestIndex === -1) {
+        throw new Error('Unable to determine best matching profile');
+    }
+
     return {
         bestProfile: profiles[bestIndex],
+        bestIndex,
         matchPercentages,
     };
+}
+
+export function getSortedMatches(
+    userValues: number[],
+    profiles: Profile[]
+): { profile: Profile; index: number; match: number }[] {
+    return profiles
+        .map((profile, index) => ({
+            profile,
+            index,
+            match: calculateOverallMatch(userValues, profile.values),
+        }))
+        .sort((a, b) => b.match - a.match);
 }

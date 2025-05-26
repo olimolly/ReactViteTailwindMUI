@@ -20,6 +20,7 @@
     "@fontsource/raleway": "^5.2.5",
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
+    "framer-motion": "^12.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

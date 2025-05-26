@@ -74,7 +74,7 @@ export default function StepTwo({
           <Typography variant="body2">
             ⚠️ Une fois que vous continuez, vos préférences seront verrouillées pendant 7 jours.
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box textAlign={'right'} sx={{ mt: 1,  }}>
             <label>
               <input
                 type="checkbox"
