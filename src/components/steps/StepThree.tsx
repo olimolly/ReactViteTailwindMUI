@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import { profiles, calculatePerSliderMatch } from '../../data/profiles';
+import { profiles, calculatePerSliderMatch, calculateOverallMatch } from '../../data/profiles';
 import CircleProgressWithLabel from '../CircleProgress/CircleProgressWithLabel';
 import { preferences } from '../../data/preferences';
 
@@ -18,6 +18,7 @@ export default function StepThree({
 }: StepThreeProps) {
     const defaultProfile = profiles[defaultProfileIndex];
     const matchPerSlider = calculatePerSliderMatch(sliders, defaultProfile.values);
+    const overallMatch = calculateOverallMatch(sliders, defaultProfile.values);
 
     return (
         <Box
@@ -34,13 +35,13 @@ export default function StepThree({
         >
             <Box>
                 <Typography variant="h5" gutterBottom>
-                    Compatibility with <strong>{defaultProfile.name}</strong>
+                    {overallMatch}% Compatibility with <strong>{defaultProfile.name}</strong>
                 </Typography>
 
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' },
+                        gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
                         gap: 3,
                         mt: 2,
                     }}
@@ -55,7 +56,7 @@ export default function StepThree({
                 </Box>
 
                 <Typography variant="body2" sx={{ mt: 4 }}>
-                    Looking for more options? We'll show how you match with other profiles next.
+                    If you think it's similar enough to your expectations, complete the joining process with few informations.
                 </Typography>
             </Box>
 

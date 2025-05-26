@@ -1,4 +1,4 @@
-import { Box, Button, Slider, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Slider, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { preferences } from '../../data/preferences';
 import { useState } from 'react';
@@ -61,28 +61,34 @@ export default function StepTwo({
           </Box>
         ))}
 
-        {/* Zone d'avertissement */}
         <Box
           sx={{
             mt: 4,
             p: 2,
-            bgcolor: 'warning.light',
+            // bgcolor: 'warning.light',
             borderRadius: 2,
+            border: '1px solid',
+            borderColor: 'divider',
             textAlign: 'left',
+            cursor: 'pointer', // ✅ indique que la zone est interactive
           }}
+          onClick={() => setConfirmed(prev => !prev)} // ✅ rend tout le bloc cliquable
         >
           <Typography variant="body2">
-            ⚠️ Une fois que vous continuez, vos préférences seront verrouillées pendant 7 jours.
+            Répondez sans trop réfléchir pour définir votre style intuitivement. Modifiable ultérieurement si nécessaire. 
           </Typography>
-          <Box textAlign={'right'} sx={{ mt: 1,  }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={confirmed}
-                onChange={(e) => setConfirmed(e.target.checked)}
-              />{' '}
-              J’ai compris
-            </label>
+
+          <Box textAlign="right" sx={{ mt: 1 }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={confirmed}
+                  onChange={(e) => setConfirmed(e.target.checked)}
+                  onClick={(e) => e.stopPropagation()} // ⛔ empêche le double toggle quand on clique juste sur la checkbox
+                />
+              }
+              label="J’ai compris"
+            />
           </Box>
         </Box>
       </Box>

@@ -1,3 +1,4 @@
+
 import { Box, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -34,11 +35,11 @@ export default function SurveyStepper() {
             sx={{
                 height: '100dvh',
                 width: '100%',
-                overflow: 'hidden',
-                bgcolor: theme => theme.palette.grey[100],
+                bgcolor: theme => theme.palette.background.default,
                 display: 'flex',
-                alignItems: 'center',
+                flexDirection: 'column',
                 justifyContent: 'center',
+                alignItems: 'center',
             }}
         >
             <Box
@@ -47,14 +48,28 @@ export default function SurveyStepper() {
                     maxWidth: 900,
                     height: '100%',
                     bgcolor: 'background.paper',
-                    borderRadius: 2,
-                    boxShadow: 1,
+                    borderTopLeftRadius: 16,
+                    borderTopRightRadius: 16,
+                    border: '1px solid',
+                    borderBottom: 'none',
+                    borderColor: 'divider',
+                    boxShadow: '0px -40px 40px rgba(0, 0, 0, 0.1)', //blur par affecté par overflow
                     display: 'flex',
+                    flex: '0 0 88vh',
                     flexDirection: 'column',
+                    position: 'relative',
+                    overflowX: 'hidden'
                 }}
             >
                 {/* Contenu animé de l'étape */}
-                <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+                <Box
+                    sx={{
+                        flexGrow: 1,
+                        overflowY: 'auto',
+                        scrollbarWidth: 'none', // Firefox
+                        '&::-webkit-scrollbar': { display: 'none' }, // Chrome / Edge
+                    }}
+                >
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeStep}
@@ -68,23 +83,26 @@ export default function SurveyStepper() {
                         </motion.div>
                     </AnimatePresence>
                 </Box>
-
-                {/* Stepper intégré en bas */}
-                <Box
-                    sx={{
-                        borderTop: '1px solid',
-                        borderColor: 'divider',
-                        bgcolor: 'background.default',
-                    }}
-                >
-                    <Stepper activeStep={activeStep} alternativeLabel>
-                        {steps.map(label => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </Box>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: '0 0 12vh',
+                    bgcolor: 'background.paper',
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                    width: '100vw',
+                }}
+            >
+                <Stepper activeStep={activeStep} alternativeLabel sx={{ minWidth: '50%' }}>
+                    {steps.map(label => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                    ))}
+                </Stepper>
             </Box>
         </Box>
     );
