@@ -26,6 +26,7 @@ export default function SurveyStepper() {
             defaultProfileIndex={DEFAULT_PROFILE_INDEX}
             onBack={handleBack}
             onNext={handleNext}
+            profileType={profileType}
         />,
         <StepFour sliders={sliders} />,
     ];

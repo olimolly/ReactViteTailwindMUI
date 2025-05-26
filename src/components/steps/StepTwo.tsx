@@ -2,6 +2,7 @@ import { Box, Button, Checkbox, FormControlLabel, Slider, Typography, useMediaQu
 import { useTheme } from '@mui/material/styles';
 import { preferences } from '../../data/preferences';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface StepTwoProps {
   sliders: number[];
@@ -19,6 +20,7 @@ export default function StepTwo({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [confirmed, setConfirmed] = useState(false);
+  const [checkboxTicked, setCheckboxTicked] = useState(false);
 
   const handleSliderChange = (index: number, value: number) => {
     const updated = [...sliders];
@@ -35,14 +37,82 @@ export default function StepTwo({
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         gap: 4,
       }}
     >
+
+      <Typography variant="h5" gutterBottom sx={{ m: 2 }}>
+        Ajustez vos préférences
+      </Typography>
+
       <Box>
-        <Typography variant="h5" gutterBottom>
-          Ajustez vos préférences
-        </Typography>
+        <AnimatePresence>
+          {!confirmed && (
+            <motion.div
+              initial={{ opacity: 0, scaleY: 0.95, maxHeight: 0 }}
+              animate={{ opacity: 1, scaleY: 1, maxHeight: 200 }}
+              exit={{ opacity: 0, scaleY: 0.95, maxHeight: 0 }}
+              style={{ transformOrigin: 'top', overflow: 'hidden' }}
+              transition={{
+                opacity: { duration: 0.7, ease: 'circOut' },    // fade fluide
+                scaleY: { duration: 0.9, ease: 'circOut' },   // adoucit l’expansion
+                maxHeight: { duration: 0.9, ease: 'circOut' } // évite le saut brutal
+              }}
+            >
+              <Box
+                sx={{
+                  m: 2,
+                  p: 2,
+                  borderRadius: 2,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  backgroundColor: 'background.paper',
+                }}
+                onClick={() => {
+                  if (!checkboxTicked) {
+                    setCheckboxTicked(true);
+                    setTimeout(() => setConfirmed(true), 350);
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="body2">
+                    Répondez à chaud pour définir votre style intuitivement. Customisable ultérieurement.
+                  </Typography>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkboxTicked}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          setCheckboxTicked(checked);
+                          if (checked) {
+                            setTimeout(() => setConfirmed(true), 350);
+                          } else {
+                            setConfirmed(false);
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    }
+                    label=""
+                  />
+                </Box>
+              </Box>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+
 
         {preferences.map((label, index) => (
           <Box key={label} sx={{ mb: 3 }}>
@@ -61,36 +131,6 @@ export default function StepTwo({
           </Box>
         ))}
 
-        <Box
-          sx={{
-            mt: 4,
-            p: 2,
-            // bgcolor: 'warning.light',
-            borderRadius: 2,
-            border: '1px solid',
-            borderColor: 'divider',
-            textAlign: 'left',
-            cursor: 'pointer', // ✅ indique que la zone est interactive
-          }}
-          onClick={() => setConfirmed(prev => !prev)} // ✅ rend tout le bloc cliquable
-        >
-          <Typography variant="body2">
-            Répondez sans trop réfléchir pour définir votre style intuitivement. Modifiable ultérieurement si nécessaire. 
-          </Typography>
-
-          <Box textAlign="right" sx={{ mt: 1 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={confirmed}
-                  onChange={(e) => setConfirmed(e.target.checked)}
-                  onClick={(e) => e.stopPropagation()} // ⛔ empêche le double toggle quand on clique juste sur la checkbox
-                />
-              }
-              label="J’ai compris"
-            />
-          </Box>
-        </Box>
       </Box>
 
       <Box

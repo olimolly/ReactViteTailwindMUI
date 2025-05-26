@@ -27,26 +27,22 @@ export default function StepOne({ profileType, setProfileType, onNext }: StepOne
             <Typography>Select your profile type:</Typography>
             <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
-                    variant={profileType === 'individual' ? 'contained' : 'outlined'}
-                    onClick={() => setProfileType('individual')}
+                    variant='contained'
+                    onClick={() => {
+                        setProfileType('individual'); onNext();
+                    }}
                 >
                     Individual
                 </Button>
                 <Button
-                    variant={profileType === 'group' ? 'contained' : 'outlined'}
-                    onClick={() => setProfileType('group')}
+                    variant='outlined'
+                    onClick={() => {
+                        setProfileType('group'); onNext();
+                    }}
                 >
                     Group
                 </Button>
             </Box>
-            <Button
-                variant="contained"
-                onClick={onNext}
-                disabled={!profileType}
-                sx={{ mt: 4 }}
-            >
-                Continue
-            </Button>
 
             {/* Toggle theme button */}
             <Button onClick={toggleColorMode} sx={{ position: 'absolute', top: 16, right: 16 }}>
