@@ -47,7 +47,7 @@ export default function StepTwo({
       </Typography>
 
       <Box>
-        <AnimatePresence>
+        <AnimatePresence >
           {!confirmed && (
             <motion.div
               initial={{ opacity: 0, scaleY: 0.95, maxHeight: 0 }}
@@ -62,8 +62,8 @@ export default function StepTwo({
             >
               <Box
                 sx={{
-                  m: 2,
-                  p: 1,
+                  m: 0,
+                  p: 0,
                   borderRadius: 2,
                   border: '1px solid',
                   borderColor: 'divider',

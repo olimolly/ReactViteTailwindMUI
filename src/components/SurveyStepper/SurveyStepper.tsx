@@ -47,7 +47,6 @@ export default function SurveyStepper() {
                 sx={{
                     width: '90vw',
                     maxWidth: 900,
-                    height: '100%',
                     bgcolor: 'background.paper',
                     borderTopLeftRadius: 16,
                     borderTopRightRadius: 16,
@@ -59,17 +58,11 @@ export default function SurveyStepper() {
                     flex: '0 0 88vh',
                     flexDirection: 'column',
                     position: 'relative',
-                    overflowX: 'hidden'
+                    overflowY: 'visible',
                 }}
             >
                 {/* Contenu animé de l'étape */}
-                <Box
-                    sx={{
-                        flexGrow: 1,
-                        overflowY: 'auto',
-                        scrollbarWidth: 'none', // Firefox
-                        '&::-webkit-scrollbar': { display: 'none' }, // Chrome / Edge
-                    }}
+                <Box sx={{ flexGrow: 1 }}
                 >
                     <AnimatePresence mode="wait">
                         <motion.div
