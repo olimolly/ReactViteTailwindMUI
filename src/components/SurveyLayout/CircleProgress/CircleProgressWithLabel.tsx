@@ -1,4 +1,5 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 
 interface CircleProgressWithLabelProps {
     value: number;
@@ -6,10 +7,36 @@ interface CircleProgressWithLabelProps {
 }
 
 export default function CircleProgressWithLabel({ value, label }: CircleProgressWithLabelProps) {
+    const [displayedValue, setDisplayedValue] = useState(value);
+    const rafRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        const startValue = displayedValue;
+        const delta = value - startValue;
+        const duration = 800; // durée en ms pour la transition
+        const startTime = performance.now();
+
+        const animate = (time: number) => {
+            const progress = Math.min((time - startTime) / duration, 1);
+            setDisplayedValue(startValue + delta * progress);
+
+            if (progress < 1) {
+                rafRef.current = requestAnimationFrame(animate);
+            }
+        };
+
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(animate);
+
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
+    }, [value]);
+
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
             <Box position="relative" display="inline-flex">
-                <CircularProgress variant="determinate" value={value} size={80} thickness={4} />
+                <CircularProgress variant="determinate" value={displayedValue} size={80} thickness={4} />
                 <Box
                     sx={{
                         top: 0,
@@ -23,7 +50,7 @@ export default function CircleProgressWithLabel({ value, label }: CircleProgress
                     }}
                 >
                     <Typography variant="caption" component="div" color="text.secondary">
-                        {`${value}%`}
+                        {`${Math.round(displayedValue)}%`}
                     </Typography>
                 </Box>
             </Box>
