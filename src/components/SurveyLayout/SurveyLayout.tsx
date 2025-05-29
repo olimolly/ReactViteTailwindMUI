@@ -31,7 +31,7 @@ export default function SurveyLayout() {
             }}
         >
             {/* Colonne gauche */}
-            <CircleColumn labels={preferences.slice(0, 3)} />
+            <CircleColumn labels={preferences.slice(0, 3)} baseDelayIndex={0} />
 
 
             <Box
@@ -68,7 +68,7 @@ export default function SurveyLayout() {
             </Box>
 
             {/* Colonne droite */}
-            <CircleColumn labels={preferences.slice(3, 6)} offset={3} />
+            <CircleColumn labels={preferences.slice(3, 6)} offset={3} baseDelayIndex={675} />
 
         </Box>
     );

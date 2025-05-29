@@ -2,36 +2,51 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
 interface CircleProgressWithLabelProps {
-    value: number;
-    label: string;
+    value: number;          // valeur cible (0–100)
+    label: string;          // libellé en dessous du cercle
+    delay?: number;         // délai avant le démarrage de l’animation (ms)
 }
 
-export default function CircleProgressWithLabel({ value, label }: CircleProgressWithLabelProps) {
-    const [displayedValue, setDisplayedValue] = useState(value);
+export default function CircleProgressWithLabel({
+    value,
+    label,
+    delay = 0,
+}: CircleProgressWithLabelProps) {
+    const [displayedValue, setDisplayedValue] = useState(0);
     const rafRef = useRef<number | null>(null);
+    const startValueRef = useRef(0); // mémorise la dernière valeur utilisée comme point de départ
 
     useEffect(() => {
-        const startValue = displayedValue;
+        let rafId: number;
+        const duration = 800;
+        const startValue = 0; // toujours 0 au démarrage
         const delta = value - startValue;
-        const duration = 800; // durée en ms pour la transition
-        const startTime = performance.now();
 
-        const animate = (time: number) => {
-            const progress = Math.min((time - startTime) / duration, 1);
-            setDisplayedValue(startValue + delta * progress);
+        const animate = (startTime: number) => {
+            const loop = (time: number) => {
+                const elapsed = time - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                setDisplayedValue(startValue + delta * easedProgress);
 
-            if (progress < 1) {
-                rafRef.current = requestAnimationFrame(animate);
-            }
+                if (progress < 1) {
+                    rafId = requestAnimationFrame(loop);
+                }
+            };
+
+            rafId = requestAnimationFrame(loop);
         };
 
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        rafRef.current = requestAnimationFrame(animate);
+        const timeoutId = setTimeout(() => {
+            requestAnimationFrame(animate);
+        }, delay);
 
         return () => {
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            clearTimeout(timeoutId);
+            cancelAnimationFrame(rafId);
         };
-    }, [value]);
+    }, [value, delay]);
+
 
     return (
         <Box sx={{ position: 'relative', display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -39,11 +54,11 @@ export default function CircleProgressWithLabel({ value, label }: CircleProgress
                 <CircularProgress variant="determinate" value={displayedValue} size={80} thickness={4} />
                 <Box
                     sx={{
+                        position: 'absolute',
                         top: 0,
                         left: 0,
                         bottom: 0,
                         right: 0,
-                        position: 'absolute',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

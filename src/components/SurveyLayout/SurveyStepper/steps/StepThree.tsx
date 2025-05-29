@@ -2,7 +2,7 @@ import { Box, Grid, Button, Checkbox, FormControlLabel, TextField, Typography } 
 import { profiles, calculatePerSliderMatch, calculateOverallMatch } from '../../../../data/profiles';
 import CircleProgressWithLabel from '../../CircleProgress/CircleProgressWithLabel';
 import { preferences } from '../../../../data/preferences';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useProgressContext } from '../../../context/ProgressContext';
 
 interface StepThreeProps {
@@ -14,10 +14,17 @@ interface StepThreeProps {
 }
 
 export default function StepThree({
-    sliders, defaultProfileIndex, onBack, onNext, profileType }: StepThreeProps) {
+    sliders, defaultProfileIndex, onBack, onNext, profileType
+}: StepThreeProps) {
     const defaultProfile = profiles[defaultProfileIndex];
-    const matchPerSlider = calculatePerSliderMatch(sliders, defaultProfile.values);
-    const overallMatch = calculateOverallMatch(sliders, defaultProfile.values);
+
+    const matchPerSlider = useMemo(() => {
+        return calculatePerSliderMatch(sliders, defaultProfile.values);
+    }, [sliders, defaultProfile]);
+
+    const overallMatch = useMemo(() => {
+        return calculateOverallMatch(sliders, defaultProfile.values);
+    }, [sliders, defaultProfile]);
 
     const [dataConsent, setDataConsent] = useState(false);
     const [rulesConsent, setRulesConsent] = useState(false);
@@ -54,7 +61,7 @@ export default function StepThree({
 
                 </Typography>
                 <Typography variant="body2" gutterBottom sx={{ m: 2 }}>
-                    If {overallMatch}% meets your expectations with us at <strong>{defaultProfile.name}</strong>, complete the process with minimal information and join now !
+                    If {overallMatch}% match is close enough from your expectations, join us now at <strong>{defaultProfile.name}</strong> by filling these minimal informations !
                 </Typography>
 
                 {/* <Box
@@ -114,35 +121,6 @@ export default function StepThree({
                 </Grid>
                 <Grid size={{ xs: 12 }} textAlign={'left'}>
                     <FormControlLabel
-                        control={<Checkbox />}
-                        label="Recevoir les prochaines infos pertinentes par newsletter (mensuel)"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={dataConsent}
-                                onChange={(e) => setDataConsent(e.target.checked)}
-                                required
-                            />
-                        }
-                        label={
-                            <span>
-                                J’autorise ce site à traiter mes données dans le cadre de cette inscription selon la{' '}
-                                <a
-                                    href="/privacy"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{ textDecoration: 'underline' }}
-                                >
-                                    politique de confidentialité
-                                </a>{' '}#RGPD.
-                            </span>
-                        }
-                    />
-
-                </Grid>
-                <Grid size={{ xs: 12 }} textAlign={'left'}>
-                    <FormControlLabel
                         control={
                             <Checkbox
                                 checked={rulesConsent}
@@ -165,6 +143,36 @@ export default function StepThree({
                         }
                     />
                 </Grid>
+                <Grid size={{ xs: 12 }} textAlign={'left'}>
+                    {/* <FormControlLabel
+                        control={<Checkbox />}
+                        label="Recevoir les prochaines infos pertinentes par newsletter (mensuel)"
+                    /> */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={dataConsent}
+                                onChange={(e) => setDataConsent(e.target.checked)}
+                                required
+                            />
+                        }
+                        label={
+                            <span>
+                                J’autorise ce site à traiter mes données dans le cadre de cette inscription selon la {' '}
+                                <a
+                                    href="/privacy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ textDecoration: 'underline' }}
+                                >
+                                    politique de confidentialité
+                                </a>{' '}#RGPD.
+                            </span>
+                        }
+                    />
+
+                </Grid>
+
             </Grid>
 
             <Box
@@ -182,7 +190,7 @@ export default function StepThree({
                     Contact us on Discord
                 </Button>
                 <Button variant="contained" fullWidth onClick={onNext} disabled={!(dataConsent && rulesConsent)}>
-                    Validate
+                    Join now
                 </Button>
             </Box>
         </Box>

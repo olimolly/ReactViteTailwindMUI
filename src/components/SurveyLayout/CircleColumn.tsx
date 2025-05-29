@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import CircleProgressWithLabel from "./CircleProgress/CircleProgressWithLabel";
 import { useProgressContext } from "../context/ProgressContext";
 
-export default function CircleColumn({ labels, offset = 0 }: { labels: string[], offset?: number }) {
+export default function CircleColumn({ labels, offset = 0, baseDelayIndex = 0 }: { labels: string[], offset?: number, baseDelayIndex?: number; }) {
     const { matchPerSlider } = useProgressContext();
 
     return (
@@ -27,6 +27,7 @@ export default function CircleColumn({ labels, offset = 0 }: { labels: string[],
                     key={label}
                     value={matchPerSlider[i + offset] || 0}
                     label={label}
+                    delay={baseDelayIndex + i * 225} // 💡 300ms entre chaque cercle
                 />
             ))}
         </Box>
