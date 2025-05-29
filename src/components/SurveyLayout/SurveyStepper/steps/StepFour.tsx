@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { profiles, getSortedMatches } from '../../data/profiles';
-import { DEFAULT_PROFILE_INDEX } from '../../config/surveyConfig';
+import { profiles, getSortedMatches } from '../../../../data/profiles';
+import { DEFAULT_PROFILE_INDEX } from '../../../../config/surveyConfig';
 
 interface StepFourProps {
   sliders: number[];

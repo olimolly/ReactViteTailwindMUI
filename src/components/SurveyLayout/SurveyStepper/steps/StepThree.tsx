@@ -1,8 +1,9 @@
 import { Box, Grid, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
-import { profiles, calculatePerSliderMatch, calculateOverallMatch } from '../../data/profiles';
-import CircleProgressWithLabel from '../CircleProgress/CircleProgressWithLabel';
-import { preferences } from '../../data/preferences';
-import { useState } from 'react';
+import { profiles, calculatePerSliderMatch, calculateOverallMatch } from '../../../../data/profiles';
+import CircleProgressWithLabel from '../../CircleProgress/CircleProgressWithLabel';
+import { preferences } from '../../../../data/preferences';
+import { useEffect, useState } from 'react';
+import { useProgressContext } from '../../../context/ProgressContext';
 
 interface StepThreeProps {
     sliders: number[];
@@ -20,6 +21,17 @@ export default function StepThree({
 
     const [dataConsent, setDataConsent] = useState(false);
     const [rulesConsent, setRulesConsent] = useState(false);
+
+    const { setProgressData } = useProgressContext();
+
+    useEffect(() => {
+        console.log("sliders", sliders);
+        console.log("matchPerSlider", matchPerSlider);
+        if (sliders.length === preferences.length) {
+            setProgressData(matchPerSlider, overallMatch);
+        }
+    }, [sliders, matchPerSlider, overallMatch]);
+
 
     return (
         <Box
@@ -45,7 +57,7 @@ export default function StepThree({
                     If {overallMatch}% meets your expectations with us at <strong>{defaultProfile.name}</strong>, complete the process with minimal information and join now !
                 </Typography>
 
-                <Box
+                {/* <Box
                     sx={{
                         display: 'grid',
                         gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
@@ -60,7 +72,7 @@ export default function StepThree({
                             value={matchPerSlider[index]}
                         />
                     ))}
-                </Box>
+                </Box> */}
             </Box>
 
             <Typography variant="h6" sx={{ mt: 4 }}>

@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
-import { useColorMode } from '../../ThemeContext';
-import App from '../App/App';
+import { useColorMode } from '../../../../ThemeContext';
+import App from '../../../App/App';
 
 interface StepOneProps {
     profileType: 'individual' | 'group' | null;

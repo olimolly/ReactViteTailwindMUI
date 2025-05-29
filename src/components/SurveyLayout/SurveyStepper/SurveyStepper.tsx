@@ -2,11 +2,11 @@
 import { Box, Step, StepLabel, Stepper } from '@mui/material';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import StepOne from '../steps/StepOne';
-import StepTwo from '../steps/StepTwo';
-import StepThree from '../steps/StepThree';
-import StepFour from '../steps/StepFour';
-import { DEFAULT_PROFILE_INDEX } from '../../config/surveyConfig';
+import StepOne from './steps/StepOne';
+import StepTwo from './steps/StepTwo';
+import StepThree from './steps/StepThree';
+import StepFour from './steps/StepFour';
+import { DEFAULT_PROFILE_INDEX } from '../../../config/surveyConfig';
 
 const steps = ['Profile', 'Preferences', 'Default Match', 'Other Matches'];
 
@@ -34,7 +34,7 @@ export default function SurveyStepper() {
     return (
         <Box
             sx={{
-                height: '100dvh',
+                minHeight: '100dvh',
                 width: '100%',
                 bgcolor: theme => theme.palette.background.default,
                 display: 'flex',
@@ -45,7 +45,7 @@ export default function SurveyStepper() {
         >
             <Box
                 sx={{
-                    width: '90vw',
+                    width: '100%',
                     maxWidth: 900,
                     bgcolor: 'background.paper',
                     borderTopLeftRadius: 16,

@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormControlLabel, Slider, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { preferences } from '../../data/preferences';
+import { preferences } from '../../../../data/preferences';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
